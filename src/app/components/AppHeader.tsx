@@ -98,7 +98,7 @@ export default function AppHeader() {
   }
 
   return (
-    <header className="flex items-center justify-between bg-white shadow-sm relative px-20 py-1 ">
+    <header className="flex items-center justify-between bg-white shadow-sm relative px-20 py-3 ">
       <Image
         className="w-auto"
         src="/image.png"
@@ -109,7 +109,7 @@ export default function AppHeader() {
 
       <div>
         <nav>
-          <ul className="flex gap-x-6 text-md font-medium cursor-pointer">
+          <ul className="flex gap-x-6 text-sm  cursor-pointer">
             <li className="cursor-pointer">Dashboard</li>
             <li className="cursor-pointer">Nástenka</li>
             <li className="cursor-pointer">História</li>
@@ -117,36 +117,30 @@ export default function AppHeader() {
         </nav>
       </div>
 
-      <div className="flex  gap-x-7">
-        <div className="relative inline-block cursor-pointer group">
+      <div className="flex gap-x-8">
+        <div className="relative flex items-center cursor-pointer group">
           <div ref={bellRef}>
             {" "}
             <FaRegBell
-              className="w-5 h-5 text-font-prim rotate-12 group-hover:rotate-0 group-hover:scale-110 transition-all
-             duration-200"
+              className="w-4 h-5 text-font-prim rotate-12 group-hover:rotate-0 group-hover:scale-110 transition-all
+             duration-200 "
               onClick={toggleDropDown}
             />
             {notificationState.problems.length > 0 && (
               <span
                 onClick={toggleDropDown}
                 className="bg-k3-red
-               text-white text-[.6rem] 
                rounded-full
                flex items-center justify-center
-               p-[.25rem]
+               p-1
                absolute
-               min-w-[10px]
-               min-h-[10px]
-                top-3
-                -right-1
+               min-w-[7px]
+               min-h-[7px]
+                top-4
+                -right-0
                 aspect-square
                 "
-              >
-                {" "}
-                {notificationState.problems.length > 99
-                  ? "99+"
-                  : notificationState.problems.length}
-              </span>
+              ></span>
             )}
           </div>
 
@@ -185,8 +179,10 @@ export default function AppHeader() {
             </div>
           )}
         </div>
-        <FaSignOutAlt className=" relative text-font-prim w-5 h-5 cursor-pointer hover:left-1 transition-all" />
-        <p className="flex text-md font-medium ">Matej</p>
+        <button className="flex items-center gap-2 px-2 py-1 rounded-md border border-FONT-SEC">
+          <p className="flex text-sm font-sm ">Matej</p>
+          <FaSignOutAlt className=" relative text-font-prim w-4 h-4 cursor-pointer" />
+        </button>
       </div>
     </header>
   );
