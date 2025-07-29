@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { FaRegBell, FaCheck, FaSignOutAlt } from "react-icons/fa";
 
@@ -110,9 +111,15 @@ export default function AppHeader() {
       <div>
         <nav>
           <ul className="flex gap-x-6 text-sm  cursor-pointer">
-            <li className="cursor-pointer">Dashboard</li>
-            <li className="cursor-pointer">Nástenka</li>
-            <li className="cursor-pointer">História</li>
+            <Link href="/dashboard" className="cursor-pointer">
+              Dashboard
+            </Link>
+            <Link href="/board" className="cursor-pointer">
+              Nástenka
+            </Link>
+            <Link href="/history" className="cursor-pointer">
+              História
+            </Link>
           </ul>
         </nav>
       </div>

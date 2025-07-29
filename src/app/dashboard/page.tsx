@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Modal from "../components/Modal";
 
 interface Comment {
   id: string;
@@ -24,6 +25,10 @@ interface Shift {
 export default function DashboardPage() {
   const [selectedShiftId, setSelectedShiftId] = useState("morning");
   const [shifts, setShifts] = useState<Shift[]>([]);
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const names = [
     "Marek",
@@ -78,22 +83,20 @@ export default function DashboardPage() {
 
   return (
     <main className="h-[calc(100vh-80px)] flex flex-col bg-white text-font-prim p-2 ">
-      <div className="flex-shrink-0">
-        <div className="flex gap-2 mb-2">
-          {shifts.map((shift) => (
-            <button
-              className={`px-4 py-2 font-normal rounded-md transition-colors ${
-                selectedShiftId === shift.id
-                  ? "text-k3-blue"
-                  : "text-gray-700 hover:text-slate-500"
-              }`}
-              key={shift.id}
-              onClick={() => setSelectedShiftId(shift.id)}
-            >
-              {shift.name}
-            </button>
-          ))}
-        </div>
+      <div className="flex gap-2 mb-2">
+        {shifts.map((shift) => (
+          <button
+            className={`px-4 py-2 font-normal rounded-md transition-colors ${
+              selectedShiftId === shift.id
+                ? "text-k3-green"
+                : "text-gray-400 hover:text-k3-green"
+            }`}
+            key={shift.id}
+            onClick={() => setSelectedShiftId(shift.id)}
+          >
+            {shift.name}
+          </button>
+        ))}
       </div>
 
       <section className="flex-1 min-h-0">
@@ -103,24 +106,35 @@ export default function DashboardPage() {
               {selectedShift.machines.map((machine) => (
                 <div
                   key={machine.id}
-                  className="bg-gray-300 border border-gray-400 rounded-lg p-2 shadow-sm flex flex-col h-full"
+                  className="flex flex-col bg-gray-300 border border-gray-400 rounded-lg p-2 shadow-sm h-full"
                 >
-                  <h3 className="text-sm font-semibold text-gray-600 mb-2 flex-shrink-0">
-                    {machine.name}
-                  </h3>
+                  <div className="flex flex-row-reverse justify-between items-center mb-2 ml-1">
+                    <span
+                      onClick={handleOpen}
+                      className="text-k3-violet font-medium text-xl cursor-pointer"
+                    >
+                      +
+                    </span>
+                    <h3 className="text-sm font-semibold text-gray-600 flex-shrink-0">
+                      {machine.name}
+                    </h3>
+                  </div>
 
                   <div className="flex-1 overflow-y-auto space-y-1">
                     {machine.comments.map((comment) => (
                       <div
                         key={comment.id}
-                        className="bg-gray-50 p-3 rounded-md"
+                        className="flex flex-col-reverse gap-1 bg-gray-50 p-2 rounded-md"
                       >
-                        <p className="text-sm font-medium text-blue-700">
+                        <p className="text-xs font-medium text-blue-700 text-right">
                           {comment.name}
                         </p>
-                        <p className="text-sm text-gray-800 leading-relaxed">
+                        <p className="text-sm text-gray-800 leading-tight">
                           {comment.text}
                         </p>
+                        <Modal open={open} onClose={handleClose}>
+                          <div>test</div>
+                        </Modal>
                       </div>
                     ))}
                   </div>
