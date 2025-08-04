@@ -4,59 +4,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { FaRegBell, FaCheck, FaSignOutAlt } from "react-icons/fa";
+import { useCommentContext } from "../context/CommentContext";
+import { useUserContext } from "../context/UserContext";
 
 export default function AppHeader() {
-  const [notificationState, setNotificationState] =
-    useState<NotificationState>({
-      problems: [
-        {
-          id: "1",
-          machineId: "k3h3",
-          machineName: "K3-h3",
-          description: "Stacanie oprava toho a toho",
-          shortDescription: "prestavba je to vyhadzané",
-          createAt: "13.3",
-          createdBy: "TEster1",
-          solved: false,
-        },
-        {
-          id: "2",
-          machineId: "biw-2",
-          machineName: "Biw2",
-          description: " Stacanie oprava toho a toho",
-          shortDescription: "najet po prestavbe",
-          createAt: " 19.9.",
-          createdBy: "TEster",
-          solved: false,
-        },
-        {
-          id: "3",
-          machineId: "biw-3",
-          machineName: "Biw3",
-          description: " Stacanie oprava toho a toho",
-          shortDescription: "doladit podavac",
-          createAt: " 19.9.",
-          createdBy: "TEster",
-          solved: false,
-        },
-      ],
-      isDropdownOpen: false,
-    });
+  const { comments, markCommentAsSolved } = useCommentContext();
+  const problemComments = comments.filter(
+    (comment) => comment.shortDescription && !comment.solved
+  );
+
+  const { user, setUser } = useUserContext();
+
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const toggleDropDown = () => {
-    setNotificationState((prev) => ({
-      ...prev,
-      isDropdownOpen: !prev.isDropdownOpen,
-    }));
-  };
-
-  const handleSolveProblem = (problemId: string) => {
-    setNotificationState((prev) => ({
-      ...prev,
-      problems: prev.problems.filter(
-        (problem) => problem.id !== problemId
-      ),
-    }));
+    setDropdownOpen((prev) => !prev);
   };
 
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -70,10 +32,7 @@ export default function AppHeader() {
         bellRef.current &&
         !bellRef.current.contains(event.target as Node)
       ) {
-        setNotificationState((prev) => ({
-          ...prev,
-          isDropdownOpen: false,
-        }));
+        setDropdownOpen(false);
       }
     };
 
@@ -81,22 +40,6 @@ export default function AppHeader() {
     return () =>
       document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
-  interface Problem {
-    id: string;
-    machineId: string;
-    machineName: string;
-    description: string;
-    shortDescription: string;
-    createdBy: string;
-    createAt: string;
-    solved: boolean;
-  }
-
-  interface NotificationState {
-    problems: Problem[];
-    isDropdownOpen: boolean;
-  }
 
   return (
     <header className="flex items-center justify-between bg-white shadow-sm relative px-20 py-3 ">
@@ -107,7 +50,6 @@ export default function AppHeader() {
         height={100}
         alt="logo"
       />
-
       <div>
         <nav>
           <ul className="flex gap-x-6 text-sm  cursor-pointer">
@@ -133,7 +75,7 @@ export default function AppHeader() {
              duration-200 "
               onClick={toggleDropDown}
             />
-            {notificationState.problems.length > 0 && (
+            {problemComments.length > 0 && (
               <span
                 onClick={toggleDropDown}
                 className="bg-k3-red
@@ -151,17 +93,17 @@ export default function AppHeader() {
             )}
           </div>
 
-          {notificationState.isDropdownOpen && (
+          {dropdownOpen && (
             <div
               ref={dropdownRef}
               className="absolute right-0 min-w-[27rem] h-max top-full p-[1rem] mt-[1.7rem] shadow-lg border border-gray-200 bg-white  "
             >
               <div className=" flex flex-col items-start justify-center space-y-2 ">
                 <h3 className="text-[1.3rem] font-semibold mb-[.3rem]">
-                  Nevyrešeno: {notificationState.problems.length}
+                  Nevyrešeno: {problemComments.length}
                 </h3>
 
-                {notificationState.problems.map((problem) => (
+                {problemComments.map((problem) => (
                   <div key={problem.id} className="py-1 w-full">
                     <div className="flex items-center  w-[100%]">
                       <p className="text-font-sec px-1 flex-1 ">
@@ -174,7 +116,7 @@ export default function AppHeader() {
                         </p>
                         <FaCheck
                           onClick={() =>
-                            handleSolveProblem(problem.id)
+                            markCommentAsSolved(problem.id)
                           }
                           className="text-font-sec hover:text-k3-green transition-all"
                         />
@@ -187,7 +129,8 @@ export default function AppHeader() {
           )}
         </div>
         <button className="flex items-center gap-2 px-2 py-1 rounded-md border border-FONT-SEC">
-          <p className="flex text-sm font-sm ">Matej</p>
+          <p className="flex text-sm font-sm ">{user}</p>
+
           <FaSignOutAlt className=" relative text-font-prim w-4 h-4 cursor-pointer" />
         </button>
       </div>
