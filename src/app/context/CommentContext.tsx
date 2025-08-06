@@ -24,7 +24,12 @@ type CommentContextType = {
   addComment: (comment: Comment) => void;
   deleteComment: (id: string) => void;
   markCommentAsSolved: (id: string) => void;
-  editComment: (id: string, description: string) => void;
+  editComment: (
+    id: string,
+    description: string,
+    shortDescription: string,
+    solved: boolean
+  ) => void;
 };
 
 const CommentContext = createContext<CommentContextType | undefined>(
@@ -47,6 +52,48 @@ export const CommentProvider = ({
       description: "Toto je testovací komentár",
       solved: false,
     },
+    {
+      id: "test9",
+      machineId: "61036",
+      machineName: "BIW 1-1",
+      shiftId: "morning",
+      createBy: "Testovací užívateľ",
+      createAt: "2024-06-01",
+      description: "Toto je testovací komentár",
+      solved: false,
+    },
+    {
+      id: "Matej",
+      machineId: "61027",
+      machineName: "BIW 1-3",
+      shiftId: "morning",
+      createBy: "Testovací užívateľ",
+      createAt: "2024-06-01",
+      description:
+        "Toto je testovací komentárToto je testovací komentárToto je testovací komentár",
+      solved: false,
+    },
+    {
+      id: "test2",
+      machineId: "61027",
+      machineName: "BIW 1-3",
+      shiftId: "morning",
+      createBy: "Matej",
+      createAt: "2024-06-01",
+      description:
+        "Toto je testovací komentár Toto je testovací komentár Toto je testovací komentár",
+      solved: false,
+    },
+    {
+      id: "test8",
+      machineId: "61028",
+      machineName: "BIW 1-3",
+      shiftId: "morning",
+      createBy: "Karel",
+      createAt: "2024-06-01",
+      description: "Toto je testovací komentár",
+      solved: false,
+    },
   ]);
 
   const addComment = (comment: Comment) => {
@@ -57,10 +104,22 @@ export const CommentProvider = ({
     setComments(comments.filter((prev) => prev.id !== id));
   };
 
-  const editComment = (id: string, description: string) => {
+  const editComment = (
+    id: string,
+    description: string,
+    shortDescription: string,
+    solved: boolean
+  ) => {
     setComments((prev) =>
       prev.map((comment) =>
-        comment.id === id ? { ...comment, description } : comment
+        comment.id === id
+          ? {
+              ...comment,
+              description,
+              shortDescription,
+              solved,
+            }
+          : comment
       )
     );
   };

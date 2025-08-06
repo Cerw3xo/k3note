@@ -25,12 +25,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${poppins.variable} font-sans antialiased bg-white text-black `}
+        className={`${poppins.variable} font-sans antialiased bg-k3-violet p-3 text-black `}
       >
         <UserProvider>
           <CommentProvider>
             <AppHeader />
-            {children}
+            <div>{children}</div>
           </CommentProvider>
         </UserProvider>
       </body>

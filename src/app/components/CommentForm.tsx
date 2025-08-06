@@ -71,7 +71,12 @@ export default function CommentForm({
       return;
     }
     if (editingComment) {
-      editComment(editingComment.id, commentState.description);
+      editComment(
+        editingComment.id,
+        commentState.description,
+        commentState.shortDescription,
+        commentState.solved
+      );
     } else {
       addComment({
         id: Date.now().toString(),
@@ -94,6 +99,7 @@ export default function CommentForm({
   return (
     <form onSubmit={handleSubmit}>
       <textarea
+        name="description"
         placeholder="popis"
         value={commentState.description}
         onChange={(e) => {
@@ -107,6 +113,7 @@ export default function CommentForm({
       {error && <div className="text-k3-red text-sm">{error}</div>}
       <label>
         <input
+          name="checkbox"
           type="checkbox"
           checked={!commentState.solved}
           onChange={(e) =>
@@ -120,6 +127,7 @@ export default function CommentForm({
 
       {!commentState.solved && (
         <input
+          name="short description"
           type="text"
           placeholder="Stručný popis problému"
           value={commentState.shortDescription}

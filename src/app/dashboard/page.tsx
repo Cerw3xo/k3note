@@ -59,14 +59,14 @@ export default function DashboardPage() {
     shifts.find((s) => s.id === selectedShiftId) || null;
 
   return (
-    <main className="h-[calc(100vh-80px)] flex flex-col bg-white text-font-prim p-2 ">
-      <div className="flex gap-2 mb-2">
+    <main className="h-[calc(100vh-90px)] flex flex-col rounded-md bg-k3-violet px-+ text-font-prim">
+      <div className="flex gap-2 my-2 bg-white w-max p-2 rounded-md shadow-sm">
         {shifts.map((shift) => (
           <button
-            className={`px-4 py-2 font-normal rounded-md transition-colors ${
+            className={`px-6 font-normal transition-colors border-r-2 last:border-none first:ml-2 ${
               selectedShiftId === shift.id
                 ? "text-k3-blue"
-                : "text-gray-400 hover:text-font-prim"
+                : "text-font-prim hover:text-accent-blue "
             }`}
             key={shift.id}
             onClick={() => setSelectedShiftId(shift.id)}
@@ -78,7 +78,7 @@ export default function DashboardPage() {
 
       <section className="flex-1 min-h-0">
         {selectedShift && (
-          <div className="grid auto-rows-fr grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 h-full">
+          <div className="grid auto-rows-fr grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-2 gap-x-3 h-full">
             {selectedShift.machines.map((machine) => {
               const machineComments = comments.filter(
                 (c) =>
@@ -88,32 +88,37 @@ export default function DashboardPage() {
               return (
                 <div
                   key={machine.id}
-                  className="flex flex-col bg-gray-300 border border-gray-400 rounded-lg p-2 shadow-sm h-full"
+                  className="flex flex-col bg-white shadow-sm rounded-md p-2 h-full hover:shadow-md"
                 >
-                  <div className="flex flex-row-reverse justify-between items-center mb-2 ml-1">
+                  <div className="flex flex-row-reverse justify-between items-center mb-2 ml-1 border-b-2  border-k3-violet py-2">
                     <span
                       onClick={() => {
                         setEditingComment(null);
                         setOpenModalFor(machine.id);
                       }}
-                      className="text-k3-blue font-medium text-xl cursor-pointer"
+                      className="w-4 h-4 flex items-center justify-center text-white text-sm cursor-pointer bg-k3-blue rounded-full hover:text-k3-blue hover:bg-accent-blue transition-all"
                     >
                       +
                     </span>
-                    <h3 className="text-sm font-semibold text-gray-600 flex-shrink-0">
-                      {machine.name}
-                    </h3>
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-sm font-semibold text-font-prim flex-shrink-0 ">
+                        {machine.name}
+                      </h3>
+                      <p className="text-sm text-font-sec">
+                        {machine.id}
+                      </p>
+                    </div>
                   </div>
                   <div className="flex-1 overflow-y-auto space-y-1">
                     {machineComments.map((comment) => (
                       <div
                         key={comment.id}
-                        className="flex flex-col-reverse relative gap-1 bg-gray-50 p-2 rounded-md"
+                        className="flex flex-col-reverse relative gap-1 bg-whitee p-2 rounded-md border-[.05rem] border-accent-blue shadow-accent-blue"
                       >
-                        <p className="text-xs font-medium text-blue-700 text-right">
+                        <p className="text-xs font-medium text-font-sec text-right">
                           {comment.createBy}
                         </p>
-                        <p className="text-sm text-gray-800 leading-tight">
+                        <p className="text-sm text-font-prim leading-tight">
                           {comment.description}
                         </p>
                         {comment.createBy === user && (
@@ -140,6 +145,7 @@ export default function DashboardPage() {
                   <Modal
                     open={openModalFor === machine.id}
                     onClose={handleClose}
+                    machineName={machine.name}
                   >
                     {openModalFor === machine.id && (
                       <CommentForm

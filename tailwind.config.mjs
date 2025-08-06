@@ -14,9 +14,10 @@ export default {
         'k3-red': '#cc071e',
         'k3-blue': '#0346F2',
         'k3-green': '#00D455',
-        'k3-violet': '#A072B5',
+        'k3-violet': '#F6F7FB',
         'font-prim': '#1A1E2C',
-        'font-sec': '#8E94A7'
+        'font-sec': '#8E94A7',
+        'accent-blue': '#DAE3FF'
       }
     },
   },
