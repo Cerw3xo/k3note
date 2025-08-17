@@ -59,14 +59,14 @@ export default function DashboardPage() {
     shifts.find((s) => s.id === selectedShiftId) || null;
 
   return (
-    <main className="h-[calc(100vh-90px)] flex flex-col rounded-md bg-k3-violet px-+ text-font-prim">
-      <div className="flex gap-2 my-2 bg-white w-max p-2 rounded-md shadow-sm">
+    <main className="h-[calc(100vh-90px)] flex flex-col rounded-md bg-background px-1">
+      <div className="flex gap-2 my-2 bg-surface/80 backdrop-blur-sm w-max p-2 rounded-xl shadow-lg border border-primary/10">
         {shifts.map((shift) => (
           <button
-            className={`px-6 font-normal transition-colors border-r-2 last:border-none first:ml-2 ${
+            className={`px-6 py-1 font-medium transition-all duration-200 first:ml-2 hover:scale-105 ${
               selectedShiftId === shift.id
-                ? "text-k3-blue"
-                : "text-font-prim hover:text-accent-blue "
+                ? "text-onPrimary bg-primary/20 rounded-lg"
+                : "text-onPrimary/70 hover:text-onSurface hover:bg-background/50 rounded-lg"
             }`}
             key={shift.id}
             onClick={() => setSelectedShiftId(shift.id)}
@@ -88,51 +88,51 @@ export default function DashboardPage() {
               return (
                 <div
                   key={machine.id}
-                  className="flex flex-col bg-white shadow-sm rounded-md p-2 h-full hover:shadow-md"
+                  className="flex flex-col bg-surface/90 shadow-lg hover:shadow-2xl rounded-xl p-3 h-full duration-300 border border-primary/10 hover:border-primary/30"
                 >
-                  <div className="flex flex-row-reverse justify-between items-center mb-2 ml-1 border-b-2  border-k3-violet py-2">
+                  <div className="flex flex-row-reverse justify-between items-center mb-3 ml-1 border-b border-onPrimary/10 py-3">
                     <span
                       onClick={() => {
                         setEditingComment(null);
                         setOpenModalFor(machine.id);
                       }}
-                      className="w-4 h-4 flex items-center justify-center text-white text-sm cursor-pointer bg-k3-blue rounded-full hover:text-k3-blue hover:bg-accent-blue transition-all"
+                      className="w-6 h-6 flex items-center justify-center text-onSurface text-sm cursor-pointer bg-primary/20 hover:bg-primary/30 rounded-full hover:scale-110 transition-all duration-200 border border-primary/30"
                     >
                       +
                     </span>
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-sm font-semibold text-font-prim flex-shrink-0 ">
+                    <div className="flex items-center gap-3">
+                      <h3 className="text-base font-semibold flex-shrink-0 text-onPrimary">
                         {machine.name}
                       </h3>
-                      <p className="text-sm text-font-sec">
+                      <p className="text-sm text-onSurface/70 bg-background/30 px-2 py-1 rounded-md">
                         {machine.id}
                       </p>
                     </div>
                   </div>
-                  <div className="flex-1 overflow-y-auto space-y-1">
+
+                  <div className="flex-1 overflow-y-auto space-y-2">
                     {machineComments.map((comment) => (
                       <div
                         key={comment.id}
-                        className="flex flex-col-reverse relative gap-1 bg-whitee p-2 rounded-md border-[.05rem] border-accent-blue shadow-accent-blue"
+                        className="flex flex-col-reverse relative gap-2 bg-background/30 p-3 rounded-lg border border-secondary/10 hover:border-primary/30 hover:bg-background/50 transition-all duration-200"
                       >
-                        <p className="text-xs font-medium text-font-sec text-right">
+                        <p className="text-xs font-medium text-right">
                           {comment.createBy}
                         </p>
-                        <p className="text-sm text-font-prim leading-tight">
+                        <p className="text-sm leading-relaxed">
                           {comment.description}
                         </p>
                         {comment.createBy === user && (
-                          <div className="flex flex-row gap-1 absolute left-3 bottom-2 text-[.7rem]">
+                          <div className="flex flex-row gap-2 absolute left-3 bottom-2 text-[.7rem]">
                             <FaPen
-                              className="text-font-sec cursor-pointer hover:text-k3-blue"
+                              className="text-onSurface/70 cursor-pointer hover:text-primary hover:scale-110 transition-all duration-200"
                               onClick={() => {
                                 setEditingComment(comment);
                                 setOpenModalFor(machine.id);
-                                console.log(comment);
                               }}
                             />
                             <FaTrashAlt
-                              className="text-font-sec cursor-pointer hover:text-k3-red"
+                              className="text-onSurface/70 cursor-pointer hover:text-red-500 hover:scale-110 transition-all duration-200"
                               onClick={() =>
                                 deleteComment(comment.id)
                               }
@@ -146,6 +146,7 @@ export default function DashboardPage() {
                     open={openModalFor === machine.id}
                     onClose={handleClose}
                     machineName={machine.name}
+                    machineId={machine.id}
                   >
                     {openModalFor === machine.id && (
                       <CommentForm

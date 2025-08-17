@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${poppins.variable} font-sans antialiased bg-k3-violet p-3 text-black `}
+        className={`${poppins.variable} font-sans antialiased bg-background p-3 text-onPrimary `}
       >
         <UserProvider>
           <CommentProvider>

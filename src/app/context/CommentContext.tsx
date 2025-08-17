@@ -7,6 +7,17 @@ import React, {
   ReactNode,
 } from "react";
 
+const LS_PREFIX = "k3note:comments:";
+
+const pad2 = (n: number) => n.toString().padStart(2, "0");
+
+export const formatDateYYYYMMDD = (date: Date): string => {
+  const y = date.getFullYear();
+  const m = pad2(date.getMonth() + 1);
+  const d = pad2(date.getDate());
+  return `${y}-${m}-${d}`;
+};
+
 export type Comment = {
   id: string;
   machineId: string;
@@ -17,6 +28,7 @@ export type Comment = {
   description: string;
   solved: boolean;
   shortDescription?: string;
+  dayKey?: string;
 };
 
 type CommentContextType = {

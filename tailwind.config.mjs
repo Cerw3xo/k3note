@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import colors from "tailwindcss/colors"
+
 export default {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -11,13 +13,17 @@ export default {
         sans: ['var(--font-poppins)', 'system-ui', 'sans-serif'],
       },
       colors: {
-        'k3-red': '#cc071e',
-        'k3-blue': '#0346F2',
-        'k3-green': '#00D455',
-        'k3-violet': '#F6F7FB',
-        'font-prim': '#1A1E2C',
-        'font-sec': '#8E94A7',
-        'accent-blue': '#DAE3FF'
+
+
+        background: '#121212',
+        surface: '#1e1e1e',
+        primary: '#ffd66c',
+        secondary: '#d8d8d8',
+        onSurface: '#FFD369',
+        onPrimary: '#e1e1e1',
+        onSecondary: '#000000',
+
+
       }
     },
   },
